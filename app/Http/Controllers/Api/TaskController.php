@@ -27,7 +27,7 @@ class TaskController extends Controller
     {
         try {
             $tasks = $this->service->index($request->user());
-            return response()->json(['ok' => true, 'data' => $tasks], 200);
+            return response()->json(['ok' => true, 'message' => 'Tarefas retornadas com sucesso', 'data' => $tasks], 200);
         } catch (\Throwable $e) {
             return $this->handleException($e, 'TaskController@index');
         }
@@ -37,7 +37,7 @@ class TaskController extends Controller
     {
         try {
             $tasks = $this->service->filterByStatus($request->user(), $status);
-            return response()->json(['ok' => true, 'data' => $tasks], 200);
+            return response()->json(['ok' => true, 'message' => 'Tarefas retornadas com sucesso', 'data' => $tasks], 200);
         } catch (\Throwable $e) {
             return $this->handleException($e, 'TaskController@filterByStatus');
         }
@@ -47,7 +47,7 @@ class TaskController extends Controller
     {
         try {
             $task = $this->service->store($request->user(), $request->all());
-            return response()->json(['ok' => true, 'data' => $task], 201);
+            return response()->json(['ok' => true,  'message' => 'Tarefa criada com sucesso', 'data' => $task], 201);
         } catch (\Throwable $e) {
             return $this->handleException($e, 'TaskController@store');
         }
@@ -61,7 +61,7 @@ class TaskController extends Controller
                 return response()->json(['ok' => false, 'message' => 'Tarefa não encontrada'], 404);
             }
 
-            return response()->json(['data' => $task], 200);
+            return response()->json(['ok' => true, 'message' => 'Tarefa atualizada com sucesso', 'data' => $task], 200);
         } catch (\Throwable $e) {
             return $this->handleException($e, 'TaskController@updateStatus');
         }
