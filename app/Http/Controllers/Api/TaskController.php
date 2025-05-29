@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Services\TaskService;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskStatusRequest;
 
 use App\Traits\HandlesApiException;
 
@@ -43,4 +44,31 @@ class TaskController extends Controller
         }
     }
 
+    public function updateStatus(UpdateTaskStatusRequest $request, $id)
+    {
+        try {
+            $task = $this->service->updateStatus($request->user(), $id, $request->status);
+            if (!$task) {
+                return response()->json(['ok' => false, 'message' => 'Tarefa não encontrada'], 404);
+            }
+
+            return response()->json(['data' => $task], 200);
+        } catch (\Throwable $e) {
+            return $this->handleException($e, 'TaskController@updateStatus');
+        }
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $deleted = $this->service->delete($request->user(), $id);
+            if (!$deleted) {
+                return response()->json(['ok' => true, 'message' => 'Tarefa não encontrada'], 404);
+            }
+
+            return response()->json(['ok' => true, 'message' => 'Tarefa deletada com sucesso'], 200);
+        } catch (\Throwable $e) {
+            return $this->handleException($e, 'TaskController@destroy');
+        }
+    }
 }

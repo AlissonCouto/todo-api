@@ -25,4 +25,25 @@ class TaskService
         return $task;
     }
 
+    public function updateStatus(User $user, $taskId, $status)
+    {
+        $task = Task::where('user_id', $user->id)->find($taskId);
+
+        if (!$task) return null;
+
+        $task->status = $status;
+        $task->save();
+
+        return $task;
+    }
+
+    public function delete(User $user, $taskId)
+    {
+        $task = Task::where('user_id', $user->id)->find($taskId);
+
+        if (!$task) return false;
+
+        $task->delete();
+        return true;
+    }
 }
