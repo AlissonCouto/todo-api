@@ -33,6 +33,15 @@ class TaskController extends Controller
         }
     }
 
+    public function filterByStatus(Request $request, $status)
+    {
+        try {
+            $tasks = $this->service->filterByStatus($request->user(), $status);
+            return response()->json(['ok' => true, 'data' => $tasks], 200);
+        } catch (\Throwable $e) {
+            return $this->handleException($e, 'TaskController@filterByStatus');
+        }
+    }
 
     public function store(StoreTaskRequest $request)
     {

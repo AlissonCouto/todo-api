@@ -13,6 +13,14 @@ class TaskService
         return Task::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
     }
 
+    public function filterByStatus(User $user, $status)
+    {
+        return Task::where('user_id', $user->id)
+            ->where('status', $status)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+    }
+
     public function store(User $user, array $data)
     {
         $task = new Task();
